@@ -56,12 +56,21 @@ The **cost function** calculates the difference between the predicted values and
 - It quantifies the error in prediction.
 **Goal:** Minimize the cost function to improve model accuracy.
 
+  ![image](https://github.com/user-attachments/assets/621f1307-9a16-49bc-8842-6afe7af8c599)
+
+
 ### Gradient Descent
 
 **Gradient Descent** is an optimization algorithm used to minimize the cost function (or loss function) in machine learning models.
 
 - It works by **iteratively updating the model parameters** in the direction that reduces the cost.
 - Helps the model learn optimal values for better predictions.
+![image](https://github.com/user-attachments/assets/6c49fb31-75e6-44f9-974b-8e7da2aeaf3a)
+![image](https://github.com/user-attachments/assets/2caf6571-8b78-46cd-9b57-a7404500129f)
+
+#### Gradient descent for linear regression
+![image](https://github.com/user-attachments/assets/6c90aa0b-02fa-418a-b9e0-caeb5f0cccda)
+
 
 ### Learning Rate
 
@@ -70,9 +79,11 @@ The **learning rate**, often denoted by **α (alpha)**, is a **hyperparameter** 
 - A **small α** results in slow learning and might take longer to converge.
 - A **large α** might overshoot the optimal value or even diverge.
 
+  ![image](https://github.com/user-attachments/assets/53d4a954-4656-40f7-89d3-f9f620e54548)
+
+
 ---
 
-## Unsupervised Learning
 
 Unsupervised learning deals with **unlabeled data**; the model explores data structure or patterns without predefined labels.
 
