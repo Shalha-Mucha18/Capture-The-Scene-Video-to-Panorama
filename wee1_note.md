@@ -83,11 +83,3 @@ The **learning rate**, often denoted by **α (alpha)**, is a **hyperparameter** 
 
 
 ---
-
-
-Unsupervised learning deals with **unlabeled data**; the model explores data structure or patterns without predefined labels.
-
-**Main applications:**
-- Clustering
-- Dimensionality reduction
-- Anomaly detection
