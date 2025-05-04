@@ -185,6 +185,69 @@ The ML project cycle begins with scoping (defining objectives), followed by iter
 #### Fairness, bias, and ethics
 Ethical ML requires proactive measures to prevent bias and harm, including diverse team brainstorming, pre-deployment audits for subgroup fairness, and established mitigation plans. Historical failures (biased hiring tools, discriminatory facial recognition) demonstrate the real-world consequences of unethical systems. While no simple checklist exists, continuous monitoring and industry-specific fairness standards help maintain accountability, as even well-intentioned algorithms can reinforce harmful stereotypes if not carefully designed.
 ![image](https://github.com/user-attachments/assets/c814d5cb-7439-4ba6-b6b1-7b376f0af72e)
+# Week 4
+### Decision Trees
+#### Decision tree model
+Decision trees classify data through sequential feature-based splits, starting at a root node (e.g., "ear shape") and traversing branches until reaching leaf nodes that make final predictions (cat/not cat). Each internal node tests a feature's value (categorical or binary in this case), directing the example left or right based on simple rules. While multiple valid trees can fit the same data (shown with 4 variants), the learning algorithm's goal is to find the tree structure that best generalizes from training examples to new cases.
+![image](https://github.com/user-attachments/assets/cfc571a3-329c-4ce1-ba5d-522db400e9f1)
+![image](https://github.com/user-attachments/assets/9b34c671-cf27-4206-a27e-b34117302649)
+#### Learning Process
+Decision tree construction involves recursively splitting nodes by selecting features that maximize purity (like ear shape first), creating branches until stopping conditions are met (pure nodes, max depth, or minimal purity gain). The algorithm evaluates potential splits by how well they separate classes (e.g., cats vs dogs), aiming to create homogeneous subgroups. While the process has multiple heuristic components developed through research (split criteria, stopping rules), modern implementations package these choices effectively for practical use.
+![image](https://github.com/user-attachments/assets/39d81d2f-0b54-49a3-b654-c68f659e2a8e)
+![image](https://github.com/user-attachments/assets/91346bdb-8016-4202-b423-040f7cbb34a1)
+
+### Decision Tree Learning
+#### Measuring purity
+Entropy quantifies node impurity by measuring the disorder in class distribution, peaking at 1 for 50-50 splits (maximum uncertainty) and dropping to 0 for pure nodes (all cats or all dogs). The formula H(p₁) = -p₁log₂(p₁) - (1-p₁)log₂(1-p₁) calculates this, where p₁ is the fraction of positive examples (e.g., cats).** This metric helps decision trees evaluate potential splits by favoring those that most reduce entropy, steering toward purer subsets of data at each branch.
+![image](https://github.com/user-attachments/assets/4c19469b-c46d-4710-8be0-fb39447c1053)
+#### Choosing a split: Information Gain
+Information gain measures the reduction in entropy (impurity) achieved by splitting on a specific feature, calculated as the root node's entropy minus the weighted average entropy of the resulting branches. The weights (w^left, w^right) account for branch sizes, prioritizing splits that create more homogeneous subsets - like the ear shape feature's 0.28 gain here versus face shape's 0.03. This metric enables systematic feature selection at each node by choosing splits that maximize purity improvement while considering subtree sizes.
+![image](https://github.com/user-attachments/assets/6155f0f1-52e6-41c0-9fa6-8410a20a61bd)
+![image](https://github.com/user-attachments/assets/db38ea99-e3c0-478e-8dff-68cceb6da5c6)
+#### Putting it together
+The decision tree construction process begins with all training examples at the root node, where the algorithm calculates the information gain for each feature and selects the one with the highest value to split the data. This creates left and right branches, dividing the dataset based on the chosen feature. The process repeats recursively for each branch, building subtrees until a stopping criterion is met, such as node purity (entropy = 0), maximum tree depth, insufficient information gain, or too few examples in a node. The algorithm employs a recursive approach, treating each subtree as a smaller decision tree, which simplifies implementation but may require careful tuning to avoid overfitting. Hyperparameters like maximum depth can be optimized using cross-validation, while alternative stopping criteria help control model complexity. Once built, the tree makes predictions by routing new examples from the root to a leaf node, where the majority class determines the output. Future refinements may include handling multi-valued categorical features beyond binary splits.
+#### Using one-hot encoding of categorical features
+Decision trees typically handle binary features, but categorical features with multiple values (e.g., ear shape: pointy, floppy, oval) require adaptation. One-hot encoding solves this by converting such features into multiple binary columns (e.g., 3 columns for ear shape), where only one is "1" per example. This maintains binary splits while preserving information. The approach also works for neural networks, converting categorical data into numerical inputs. However, continuous numerical features need different treatment. One-hot encoding ensures compatibility across models while simplifying decision tree construction.
+![image](https://github.com/user-attachments/assets/e56401a2-b3ec-4e6e-8266-800fa8bb3981)
+#### Continuous valued features
+Decision trees can effectively handle continuous features like weight by evaluating multiple split thresholds to maximize information gain. The algorithm sorts the feature values and tests midpoints between adjacent values as potential split points, calculating the entropy reduction for each candidate threshold. For example, when splitting on weight, it might compare thresholds like ≤8, ≤9, or ≤13 pounds, selecting the one that provides the highest information gain compared to other features. If a continuous feature's optimal threshold (e.g., weight ≤9) yields better information gain than categorical features, the tree splits the data accordingly. This method allows decision trees to work seamlessly with both discrete and continuous variables, and can be extended to regression problems by using variance reduction instead of entropy. The process ensures optimal splits while maintaining the tree's interpretability and predictive power.
+![image](https://github.com/user-attachments/assets/3cd15545-e53d-4754-a4fd-3884b0ed74a4)
+### Tree Ensembles
+#### Using multiple decision trees
+A key limitation of single decision trees is their sensitivity to minor data variations—changing just one training example can lead to entirely different tree structures and splits. For instance, altering a single cat's ear shape feature might switch the root split from "ear shape" to "whiskers," producing a completely different tree. This lack of robustness motivates the use of tree ensembles, which aggregate predictions from multiple trees to improve accuracy and stability.
+Each tree is trained in an ensemble on slightly varied data or with different splitting criteria, yielding diverse but plausible models. During inference, all trees vote on the prediction (e.g., majority vote for classification). For example, three trees might predict "cat," "not cat," and "cat" for a test instance, resulting in a final "cat" prediction. This voting mechanism dilutes the influence of any single tree’s errors, enhancing overall reliability.
+The next step involves generating diverse trees efficiently. Techniques like sampling with replacement (e.g., bootstrapping) create varied training subsets for each tree, ensuring differences in their structures. This approach underpins powerful ensemble methods like random forests, which combine the strength of multiple trees while mitigating individual instabilities.
+![image](https://github.com/user-attachments/assets/9dcceb6b-1e95-4772-ada9-bdcddcfe328f)
+#### Sampling with replacement
+A critical technique for creating effective tree ensembles is sampling with replacement, which generates diverse training sets to construct multiple decision trees. Imagine placing four colored tokens (red, yellow, green, blue) in a bag: each draw returns a random token, which is immediately replaced, allowing the same token to appear multiple times in a sample (e.g., green, yellow, blue, blue). This method ensures variability—some tokens may repeat, while others might not appear at all in a given sample.
+
+Applied to machine learning, this process creates varied training subsets from the original dataset. For instance, with 10 cat/dog examples, sampling with replacement might yield a new 10-example set where some examples repeat and others are omitted. This introduces diversity into each tree’s training data, reducing overreliance on any single dataset configuration. By aggregating predictions from trees trained on these slightly different subsets (e.g., through majority voting), ensembles like random forests achieve greater robustness and accuracy than individual trees.
+#### Random forest algorithm
+The random forest algorithm builds an ensemble of decision trees to create a more robust and accurate model than a single tree. It works by generating multiple training sets through sampling with replacement (bootstrapping), where each tree is trained on a slightly different subset of the data that may include repeated examples. To further increase diversity, at each node split, the algorithm randomly selects a subset of features (typically the square root of the total features) to consider for splitting rather than all features. By training many such trees (usually 64-100) and having them vote on predictions, the random forest reduces overfitting and improves generalization. This combination of data and feature randomization makes the model less sensitive to noise or variations in the training data. The approach typically outperforms single decision trees and bagged ensembles, with methods like XGBoost offering even further improvements through boosting techniques.
+![image](https://github.com/user-attachments/assets/ca3b99f5-efb8-4252-974e-2f3e694b57df)
+![image](https://github.com/user-attachments/assets/ed1c86c9-466e-4c87-88bf-266cc7181cbe)
+#### XGBoost
+XGBoost has emerged as one of the most powerful and widely used machine learning algorithms, particularly for structured data problems. This gradient boosting framework builds decision trees sequentially, with each new tree specifically targeting the errors made by previous ones, much like a student focusing on their weak areas to improve. What sets XGBoost apart is its optimized implementation that makes it exceptionally fast and efficient, while incorporating regularization to prevent overfitting. The algorithm intelligently weights misclassified examples in subsequent iterations, allowing it to learn complex patterns more effectively than traditional random forests. Its versatility shines through in both classification and regression tasks, with simple implementations available through Python libraries. XGBoost's consistent top performance in machine learning competitions and real-world applications has cemented its status as a go-to algorithm, often outperforming even deep learning approaches for tabular data problems. The combination of speed, accuracy, and ease of use makes XGBoost an essential tool in any data scientist's toolkit.
+![image](https://github.com/user-attachments/assets/e40dd9cc-e3ff-4652-a69f-3ac233e595ef)
+![image](https://github.com/user-attachments/assets/16db3efe-fc1d-4fd4-ad65-fc9c52e560ff)
+![image](https://github.com/user-attachments/assets/04a56432-8681-484f-a230-774627664cbc)
+#### When to use decision trees
+Decision trees and tree ensembles like XGBoost excel with tabular (structured) data, such as spreadsheets with categorical or numerical features, making them ideal for tasks like housing price prediction or classification problems. They train quickly, enabling faster iteration in the machine learning development cycle, and small trees can be interpretable. However, for unstructured data (images, audio, text), neural networks are the preferred choice, as they handle complex patterns more effectively. While neural networks work across all data types (including mixed data), they often require more computational resources and time to train. A key advantage of neural networks is transfer learning, which leverages pre-trained models for better performance with limited data. Additionally, neural networks can be more easily combined into multi-model systems due to their compatibility with gradient descent optimization.
+![image](https://github.com/user-attachments/assets/10a356ee-254a-4c4d-976c-1695287af060)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
