@@ -1,6 +1,5 @@
 # Week 1
 ## Operations with vectors:
-
 Vectors are objects that can represent movement in space or describe the attributes of an object. In physics, vectors are often thought of as entities that move us through physical space, while in data science, they are used to represent attributes of objects, like the characteristics of a house (e.g., square footage, number of bedrooms, price).
 
 The key operations on vectors include:
@@ -35,8 +34,9 @@ $$
 
 These equations demonstrate how vector addition and scalar multiplication work in a 2D space.
 # Week 2
-## Modulus & inner product
-### Length (or Magnitude) of a Vector:
+## Modulus & Inner Product
+
+#### Length (or Magnitude) of a Vector:
 
 The length or magnitude of a vector is calculated using the Pythagorean theorem. For a 2D vector 
 $\mathbf{r} = a\mathbf{i} + b\mathbf{j}$, the length of the vector is the square root of the sum of the squares of its components:
@@ -47,7 +47,7 @@ $$
 
 This idea can be generalized to vectors with more dimensions or even those with different units (like length, time, price, etc.).
 
-### Dot Product:
+#### Dot Product:
 
 The dot product (or inner product) of two vectors $\mathbf{r}$ and $\mathbf{s}$ is calculated by multiplying their corresponding components and summing the results:
 
@@ -72,7 +72,7 @@ This results in a scalar value. The dot product has several important properties
   a (\mathbf{r} \cdot \mathbf{s}) = \mathbf{r} \cdot (a \mathbf{s})
   $$
 
-### Connection Between Dot Product and Length:
+#### Connection Between Dot Product and Length:
 
 The dot product of a vector with itself gives the square of its length:
 
@@ -105,3 +105,4 @@ The key equations are:
   $$
 
 These equations define how to compute both the magnitude (length) and the dot product of vectors, essential tools in vector analysis.
+
