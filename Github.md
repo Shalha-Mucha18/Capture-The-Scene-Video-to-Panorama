@@ -17,7 +17,8 @@ Git is used to manage source code changes, track versions, collaborate with othe
 * Git is the version control system used to track code changes locally on your machine.
 * GitHub is a cloud-based platform for hosting Git repositories and sharing code with others, providing additional features like pull requests, issues, and continuous integration.
 
-![alt text](<WhatsApp Image 2025-05-03 at 00.24.19_2cb0a808.jpg>)
+![image](https://github.com/user-attachments/assets/1a74e2fb-654b-48a7-9260-35c90abbff6a)
+
 
 **Git commands (local usage):**
 ```bash 
